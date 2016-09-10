@@ -1,0 +1,40 @@
+<md-sidenav class="md-sidenav-left app-sidenav" md-component-id="app-sidenav" md-is-locked-open="$mdMedia('gt-md')" md-whiteframe="6">
+
+	<md-toolbar class="sidenav-header md-hue-2" layout="column" layout-align="center center" md-whiteframe="2" layout-padding flex>
+		<div class="title">ProductivEnv</div>
+	</md-toolbar>
+
+	<md-content class="md-accent" layout-padding flex>
+		<md-list flex>
+			<md-list-item ng-href="#/">
+				<md-icon>
+					<i class="material-icons">home</i>
+				</md-icon>
+				<p>Home</p>
+			</md-list-item>
+			<md-list-item ui-sref="app.users">
+				<md-icon>
+					<i class="material-icons">people</i>
+				</md-icon>
+				<p>Users</p>
+			</md-list-item>
+		</md-list>
+	</md-content>
+
+</md-sidenav>
+
+<section layout="column" flex>
+	<md-toolbar md-whiteframe="3">
+		<div class="md-toolbar-tools" ng-controller="AppSidenavController as vm">
+			<md-button class="md-icon-button hide-gt-sm" ng-click="vm.toggle()">
+				<md-icon>
+					<i class="material-icons">menu</i>
+				</md-icon>
+			</md-button>
+			<h1 class="md-toolbar-tools">Sample App</h1>
+		</div>
+	</md-toolbar>
+	<md-content layout-padding>
+		<div ui-view></div>
+	</md-content>
+</section>

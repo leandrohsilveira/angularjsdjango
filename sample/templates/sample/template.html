@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br" ng-app="sampleApp">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Sample App</title>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic" >
+	<link rel="stylesheet" href='{% static "/sample/css/app.css" %}'>
+	<link rel="stylesheet" href='{% static "/sample/fonts/material-icons.css" %}'>
+	<link rel="stylesheet" href='{% static "/sample/bower_components/angular-material/angular-material.css" %}'>
+</head>
+<body>
+
+	<md-content ui-view layout="row" layout-fill></md-content>
+
+
+
+
+	<!-- Libs -->
+	<script src='{% static "/sample/bower_components/angular/angular.js" %}'></script>
+	<script src='{% static "/sample/bower_components/angular-material/angular-material.js" %}'></script>
+	<script src='{% static "/sample/bower_components/angular-ui-router/release/angular-ui-router.js" %}'></script>
+	<script src='{% static "/sample/bower_components/angular-aria/angular-aria.js" %}'></script>
+	<script src='{% static "/sample/bower_components/angular-animate/angular-animate.js" %}'></script>
+	<script src='{% static "/sample/bower_components/angular-messages/angular-messages.js" %}'></script>
+
+
+	<!-- Application -->
+	<script src='{% static "/sample/js/app.js" %}'></script>
+	<script src='{% static "/sample/js/route.js" %}'></script>
+
+	<!-- Controllers -->
+	<script src='{% static "/sample/js/controllers/users-list.controller.js" %}'></script>
+	<script src='{% static "/sample/js/controllers/app-sidenav.controller.js" %}'></script>
+
+</body>
+</html>
