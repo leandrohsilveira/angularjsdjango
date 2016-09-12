@@ -6,58 +6,75 @@ class Resources:
 	model=None
 	fields_whitelist=None
 
+	def get_fields_filters(self):
+		return {}
+
 	@classmethod
 	def register_resources(cls, url_regex, namespace):
-		return url(url_regex, include(cls.__get_urls()), name=namespace)
+		return url(url_regex, include(cls().__get_urls()), name=namespace)
 
-	@classmethod
-	def __get_urls(cls):
+	def __get_urls(self):
 		return [
-			url(r'^$', cls.__handle, name='resource'),
-			url(r'^(?P<pk>[0-9]+)$', cls.__handle, name='resource_pk'),
+			url(r'^$', self.__handle, name='resource'),
+			url(r'^(?P<pk>[0-9]+)$', self.__handle, name='resource_pk'),
 		]
 
-	@classmethod
-	def __get_allowed_fields(cls, fields):
+	def __get_allowed_fields(self, fields):
 		allowed = []
 		if fields:
 			for field in fields:
-				if field in cls.fields_whitelist:
+				if field in self.fields_whitelist:
 					allowed.append(field)
 		if allowed:
 			return allowed
-		return cls.fields_whitelist
+		return self.fields_whitelist
 
-	@classmethod
-	def __handle(cls, request, pk=None):
+	def __handle(self, request, pk=None):
 		if request.method == 'GET':
-			return cls.__handle_get(request, request.GET, pk)
+			return self.__handle_get(request, pk)
 
-	@classmethod
-	def __handle_get(cls, request, method_obj, pk=None):
-		fields = cls.__get_allowed_fields(method_obj.getlist("field"))
+	def __handle_get(self, request, pk=None):
+		fields = self.__get_allowed_fields(request.GET.getlist("f"))
 
 		if pk:
-			return cls.__get_model(request, pk, fields)
+			return self.__get_model(request, pk, fields)
 		else:
-			limit = int(method_obj.get("limit", 10))
-			first = int(method_obj.get("page", 1)) * limit - limit
+			limit = int(request.GET.get("l", 10))
+			first = int(request.GET.get("p", 1)) * limit - limit
 			last = first + limit;
-			return cls.__get_list(request, fields, first, last)
+			filters_values = self.__get_filters_values(request.GET)
+			return self.__get_list(request, fields, first, last, filters_values)
 
-	@classmethod
-	def __serialize(cls, obj):
+	def __get_filters_values(self, method_obj):
+		values = {}
+		fields_filters = self.get_fields_filters()
+		for key in fields_filters:
+			value = method_obj.get(key)
+			if value:
+				values[key] = value
+		return values
+
+	def __serialize(self, obj):
 		return JsonResponse(obj)
 
-	@classmethod
-	def __get_model(cls, request, pk, fields):
-		model = cls.model.objects.get(id=pk)
+	def __get_model(self, request, pk, fields):
+		model = self.model.objects.get(id=pk)
 		model_dict = model_to_dict(model, fields=fields)
 		#print(model_dict)
-		return cls.__serialize(model_dict)
+		return self.__serialize(model_dict)
 
-	@classmethod
-	def __get_list(cls, request, fields, first=0, last=10):
-		result = cls.model.objects.all().values(*fields)[first:last]
-		count = cls.model.objects.count()
-		return cls.__serialize({ "result": list(result), "count": count })
+	def __get_list(self, request, fields, first=0, last=10, filters_values={}):
+		fields_filters = self.get_fields_filters()
+		query = self.model.objects
+
+		if fields_filters:
+			for key in filters_values:
+				filter = fields_filters.get(key)
+				value = filters_values.get(key)
+				query = filter(query, value)
+		else:
+			query = query.all()
+
+		result = query.values(*fields)[first:last]
+		count = self.model.objects.count()
+		return self.__serialize({ "result": list(result), "count": count })

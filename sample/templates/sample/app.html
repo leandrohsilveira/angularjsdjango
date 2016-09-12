@@ -7,13 +7,13 @@
 	<md-content class="md-accent" layout-padding flex>
 		<md-list flex>
 			<md-list-item ng-href="#/">
-				<md-icon>
+				<md-icon class="md-accent">
 					<i class="material-icons">home</i>
 				</md-icon>
 				<p>Home</p>
 			</md-list-item>
 			<md-list-item ui-sref="app.users">
-				<md-icon>
+				<md-icon class="md-accent">
 					<i class="material-icons">people</i>
 				</md-icon>
 				<p>Users</p>
@@ -26,8 +26,8 @@
 <section layout="column" flex>
 	<md-toolbar md-whiteframe="3">
 		<div class="md-toolbar-tools" ng-controller="AppSidenavController as vm">
-			<md-button class="md-icon-button hide-gt-sm" ng-click="vm.toggle()">
-				<md-icon>
+			<md-button class="md-icon-button hide-gt-md" ng-click="vm.toggle()">
+				<md-icon class="md-accent">
 					<i class="material-icons">menu</i>
 				</md-icon>
 			</md-button>

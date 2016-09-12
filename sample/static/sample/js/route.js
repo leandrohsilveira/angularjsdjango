@@ -23,14 +23,10 @@
 				parent: 'app',
 				url: '/users',
 				templateUrl: 'template/users-list.html',
-				controller: 'UsersListController as vm',
-				params: {
-					page: 1,
-					limit: 2
-				}
+				controller: 'UsersListController as vm'
 			});
 
-		$urlRouterProvider.otherwise('/app/users');
+		$urlRouterProvider.otherwise('/users');
 	}
 
 })();
